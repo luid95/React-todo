@@ -1,34 +1,41 @@
-import React, { Fragment, useState } from "react";
-import { TodoCounter } from "./components/TodoCounter";
-import { TodoSearch } from "./components/TodoSearch";
-import { TodoList } from "./components/TodoList";
-import { TodoItem } from "./components/TodoItem";
-import { CreateTodoButton } from "./components/CreateTodoButton";
-//import './App.css';
+import React, { useState } from "react";
+import { AppUI } from "./AppUI";
 
-const defaultTodos =[
-  {
-    text: 'Cortar cebollar',
-    completed: true
-  },
-  {
-    text: 'Tomar curso de React',
-    completed: false
-  },
-  {
-    text: 'Llorar con la llorona',
-    completed: false
-  },
-  { 
-    text: 'LALALALAA', 
-    completed: false 
-  }
-];
+// const defaultTodos =[
+//   {
+//     text: 'Cortar cebollar',
+//     completed: true
+//   },
+//   {
+//     text: 'Tomar curso de React',
+//     completed: false
+//   },
+//   {
+//     text: 'Llorar con la llorona',
+//     completed: false
+//   },
+//   { 
+//     text: 'LALALALAA', 
+//     completed: false 
+//   }
+// ];
 
 function App() {
 
+  const localStorageTodos = localStorage.getItem('TODOS_V1');
+  let parsedTodos;
+
+  if(!localStorageTodos){
+    localStorage.setItem('TODOS_V1', JSON.stringify([]));
+    parsedTodos = [];
+
+  }else{
+    parsedTodos = JSON.parse(localStorageTodos);
+
+  }
+
   //Declaracion de estado
-  const [todos, setTodos] = useState(defaultTodos);
+  const [todos, setTodos] = useState(parsedTodos);
   const [searchValue, setSerchValue] = useState('');
 
   //Verificar  todos completed and all todos
@@ -54,6 +61,15 @@ function App() {
     
   }
 
+  //funcion para persistir los cambios generados a los TODOs
+  const saveTodos = ( newTodos ) => {
+    const stringifiedTodos = JSON.stringify(newTodos);
+
+    localStorage.setItem('TODOS_V1', stringifiedTodos);
+
+    setTodos(newTodos);
+  };
+
   //funcion para marcar completar y eliminar Todos
   const completeTodo = (text) => {
 
@@ -62,7 +78,7 @@ function App() {
     const newTodos = [...todos];
     newTodos[todoIndex].completed = true;
 
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
   
   const deleteTodo = (text) => {
@@ -72,38 +88,19 @@ function App() {
     const newTodos = [...todos];
     newTodos.splice(todoIndex,1);
 
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   return (
-    <Fragment>
-      <TodoCounter 
-        total ={totalTodos}
-        completed ={completedTodos}
-      />
-      
-      <TodoSearch 
-        searchValue={searchValue}
-        setSerchValue={setSerchValue}
-      />
-      
-
-      <TodoList>
-        {searchedTodos.map(todo => (
-          
-          <TodoItem 
-            key={todo.text} 
-            text={todo.text}
-            completed={todo.completed} 
-            onComplete={ () => completeTodo(todo.text) }
-            onDelete={ () => deleteTodo(todo.text) }
-          />
-        ))}
-        </TodoList>
-      
-      <CreateTodoButton />
-      
-    </Fragment>
+    <AppUI
+      totalTodos={totalTodos}
+      completedTodos={completedTodos}
+      searchValue={searchValue}
+      setSerchValue={setSerchValue}
+      searchedTodos={searchedTodos}
+      completeTodo={completeTodo}
+      deleteTodo={deleteTodo}
+    />
   );
 }
 
