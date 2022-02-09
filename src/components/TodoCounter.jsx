@@ -1,10 +1,14 @@
-import React, { Fragment} from "react";
+import React, { Fragment, useContext } from "react";
+import { TodoContext } from "../context/AppContext";
 import '../css/TodoCounter.css';
 
 const TodoCounter = ({total, completed}) => {
+
+    const { totalTodos, completedTodos } = useContext(TodoContext);
+
     return ( 
         <Fragment>
-            <h2 className="TodoCounter">Has completado {completed} de {total} TODOs</h2>
+            <h2 className="TodoCounter">Has completado {completedTodos} de {totalTodos} TODOs</h2>
         </Fragment>
      );
 }

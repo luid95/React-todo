@@ -1,34 +1,28 @@
-import React, {Fragment} from 'react';
+import React, { Fragment, useContext } from 'react';
+import { TodoContext } from "./context/AppContext";
 import { TodoCounter } from "./components/TodoCounter";
 import { TodoSearch } from "./components/TodoSearch";
 import { TodoList } from "./components/TodoList";
 import { TodoItem } from "./components/TodoItem";
 import { CreateTodoButton } from "./components/CreateTodoButton";
 
-const AppUI = ({
-    loading,
-    error,
-    totalTodos,
-    completedTodos,
-    searchValue,
-    setSerchValue,
-    searchedTodos,
-    completeTodo,
-    deleteTodo
-}) => {
+const AppUI = () => {
+
+    const {
+        error,
+        loading,
+        searchedTodos,
+        completeTodo,
+        deleteTodo
+    } = useContext(TodoContext);
+    
     return ( 
         <Fragment>
-            <TodoCounter 
-                total ={totalTodos}
-                completed ={completedTodos}
-            />
+            <TodoCounter />
             
-            <TodoSearch 
-                searchValue={searchValue}
-                setSerchValue={setSerchValue}
-            />
+            <TodoSearch />
             
-
+            
             <TodoList>
                 {error && <p>Desespérate, hubo un error...</p>}
                 {loading && <p>Estamos cargando, no desesperes...</p>}
@@ -44,7 +38,9 @@ const AppUI = ({
                     onDelete={ () => deleteTodo(todo.text) }
                 />
                 ))}
-                </TodoList>
+            </TodoList>
+                
+
             
             <CreateTodoButton />
         
