@@ -14,6 +14,7 @@ function TodoProvider(props) {
     
     //Declaracion de estado
     const [searchValue, setSerchValue] = useState('');
+    const [openModal, setOpenModal] = useState(false);
 
     //Verificar  todos completed and all todos
     const completedTodos = todos.filter(todo => !!todo.completed).length;
@@ -59,6 +60,19 @@ function TodoProvider(props) {
         saveTodos(newTodos);
     };
 
+    //funcion para marcar crear y eliminar Todos
+    const addTodo = (text) => {
+    
+        const newTodos = [...todos];
+
+        newTodos.push({
+            completed: false,
+            text
+        });
+    
+        saveTodos(newTodos);
+    };
+
     return(
         <TodoContext.Provider value={{
             loading,
@@ -68,8 +82,11 @@ function TodoProvider(props) {
             searchValue,
             setSerchValue,
             searchedTodos,
+            addTodo,
             completeTodo,
             deleteTodo,
+            openModal,
+            setOpenModal
         }}>
             {props.children}
         </TodoContext.Provider>

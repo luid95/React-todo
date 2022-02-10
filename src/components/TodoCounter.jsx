@@ -2,7 +2,7 @@ import React, { Fragment, useContext } from "react";
 import { TodoContext } from "../context/AppContext";
 import '../css/TodoCounter.css';
 
-const TodoCounter = ({total, completed}) => {
+const TodoCounter = () => {
 
     const { totalTodos, completedTodos } = useContext(TodoContext);
 

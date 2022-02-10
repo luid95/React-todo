@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import '../css/CreateTodoButton.css';
 
 const CreateTodoButton = (props) => {
 
-    const onClickButton = (msg) => {
-        alert(msg);
+    const onClickButton = () => {
+        props.setOpenModal(prevState => !prevState);
     };
 
     return ( 
