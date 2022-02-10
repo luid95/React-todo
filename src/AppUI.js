@@ -1,4 +1,5 @@
 import React, { Fragment, useContext } from 'react';
+
 import { TodoContext } from "./context/AppContext";
 import { TodoCounter } from "./components/TodoCounter";
 import { TodoSearch } from "./components/TodoSearch";
@@ -7,6 +8,10 @@ import { TodoItem } from "./components/TodoItem";
 import { TodoForm } from './components/TodoForm';
 import { CreateTodoButton } from "./components/CreateTodoButton";
 import { Modal } from "./Modal/index";
+
+import { TodosError } from './components/TodosError';
+import { TodosLoading } from './components/TodosLoading';
+import { EmptyTodos } from './components/EmptyTodos';
 
 const AppUI = () => {
 
@@ -28,9 +33,9 @@ const AppUI = () => {
             
             
             <TodoList>
-                {error && <p>Desespérate, hubo un error...</p>}
-                {loading && <p>Estamos cargando, no desesperes...</p>}
-                {(!loading && !searchedTodos.length) && <p>¡Crea tu primer TODO!</p>}
+                {error && <TodosError error ={error} /> }
+                {loading && <TodosLoading /> }
+                {(!loading && !searchedTodos.length) && <EmptyTodos /> }
 
                 {searchedTodos.map(todo => (
                 
